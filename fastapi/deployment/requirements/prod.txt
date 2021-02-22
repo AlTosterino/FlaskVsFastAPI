@@ -1,0 +1,6 @@
+fastapi==0.63.0
+    # via -r /Users/altosterino/PycharmProjects/FlaskVsFastAPI/fastapi/deployment/requirements/prod.in
+pydantic==1.7.3
+    # via fastapi
+starlette==0.13.6
+    # via fastapi
