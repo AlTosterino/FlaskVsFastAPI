@@ -1,2 +1,6 @@
 -c prod.in
 pytest
+black
+autoflake
+mypy
+isort

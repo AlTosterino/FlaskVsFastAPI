@@ -1,6 +1,13 @@
 PROJ_PTH=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+FLAKE_APP_PATH = flask/src
+FASTAPI_APP_PATH = fastapi/src
 PYTHON_EXEC?=python
 COMPOSE_EXEC?=docker-compose
+
+LINT_PATHS = \
+$(FLAKE_APP_PATH) \
+$(FASTAPI_APP_PATH) \
+tests\
 
 compile-deps:
 	$(PYTHON_EXEC) -m piptools compile --no-header  "${PROJ_PTH}fastapi/deployment/requirements/dev.in"
@@ -26,3 +33,10 @@ sync-deps:
 sync-deps-prod:
 	$(PYTHON_EXEC) -m piptools sync "${PROJ_PTH}fastapi/deployment/requirements/prod.txt"
 	$(PYTHON_EXEC) -m piptools sync "${PROJ_PTH}flask/deployment/requirements/prod.txt"
+
+lint:
+	$(PYTHON_EXEC) -m autoflake --in-place --recursive --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables --remove-all-unused-imports $(LINT_PATHS)
+	$(PYTHON_EXEC) -m black $(LINT_PATHS)
+	$(PYTHON_EXEC) -m isort $(LINT_PATHS)
+	$(PYTHON_EXEC) -m mypy $(FLAKE_APP_PATH) --ignore-missing-imports
+	$(PYTHON_EXEC) -m mypy $(FASTAPI_APP_PATH) --ignore-missing-imports
