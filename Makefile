@@ -1,6 +1,6 @@
 PROJ_PTH=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-FLAKE_APP_PATH = flask/src
-FASTAPI_APP_PATH = fastapi/src
+FLAKE_APP_PATH = flask/src/
+FASTAPI_APP_PATH = fastapi/src/
 PYTHON_EXEC?=python
 COMPOSE_EXEC?=docker-compose
 
@@ -42,3 +42,6 @@ lint:
 
 run-fastapi:
 	uvicorn fastapi_app.web_app.app:app --reload
+
+run-flask:
+	$(PYTHON_EXEC) $(FLAKE_APP_PATH)flask_app/web_app/app.py
