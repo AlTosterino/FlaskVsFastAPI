@@ -24,8 +24,7 @@ recompile-deps:
 
 
 sync-deps:
-	$(PYTHON_EXEC) -m piptools sync "${PROJ_PTH}fastapi/deployment/requirements/dev.txt"
-	$(PYTHON_EXEC) -m piptools sync "${PROJ_PTH}flask/deployment/requirements/dev.txt"
+	$(PYTHON_EXEC) -m piptools sync "${PROJ_PTH}fastapi/deployment/requirements/dev.txt" "${PROJ_PTH}flask/deployment/requirements/dev.txt" "${PROJ_PTH}fastapi/deployment/requirements/prod.txt" "${PROJ_PTH}flask/deployment/requirements/prod.txt"
 	$(PYTHON_EXEC) -m pip install -e fastapi
 	$(PYTHON_EXEC) -m pip install -e flask
 
@@ -40,3 +39,6 @@ lint:
 	$(PYTHON_EXEC) -m isort $(LINT_PATHS)
 	$(PYTHON_EXEC) -m mypy $(FLAKE_APP_PATH) --ignore-missing-imports
 	$(PYTHON_EXEC) -m mypy $(FASTAPI_APP_PATH) --ignore-missing-imports
+
+run-fastapi:
+	uvicorn fastapi_app.web_app.app:app --reload

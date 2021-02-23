@@ -1,4 +1,4 @@
--c prod.in
+-c prod.txt
 pytest
 black
 autoflake
