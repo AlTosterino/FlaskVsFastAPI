@@ -1,25 +1,31 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from fastapi import FastAPI, HTTPException
+
 app = FastAPI()
+
 
 class Creator(BaseModel):
     first_name: str
     last_name: str
+
 
 class NewsInput(BaseModel):
     title: str
     content: str
     creator: Creator
 
+
 class News(NewsInput):
     id: int
 
+
 class DatabaseRepositoryError(Exception):
     pass
+
 
 @dataclass
 class NewsRepository:
@@ -38,13 +44,14 @@ class NewsRepository:
                 return news
         raise DatabaseRepositoryError(f"News with id {news_id} don't exist")
 
-DATABASE_REPOSITORY = NewsRepository()
 
+DATABASE_REPOSITORY = NewsRepository()
 
 
 @app.post("/news", response_model=News)
 def add_news(news_input: NewsInput):
     return DATABASE_REPOSITORY.save(news_input=news_input)
+
 
 @app.get("/news/{news_id}", response_model=News)
 def get_news(news_id: int):
