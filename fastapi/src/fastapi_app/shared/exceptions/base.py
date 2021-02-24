@@ -1,0 +1,2 @@
+class FastAPIAppError(Exception):
+    pass
