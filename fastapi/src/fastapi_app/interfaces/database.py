@@ -8,13 +8,13 @@ from fastapi_app.web_app.schemas import NewsSchemaInput
 
 class DatabaseRepository(Abstract):
     @abstractmethod
-    def save(self, news: NewsSchemaInput) -> News:
+    def save_news(self, news: NewsSchemaInput) -> News:
         pass
 
     @abstractmethod
-    def get(self, id: int) -> News:
+    def get_news(self, id: int) -> News:
         pass
 
     @abstractmethod
-    def get_by_filter(self, distinct: bool = True, **kwargs: Any) -> List[News]:
+    def get_news_by_filter(self, **kwargs: Any) -> List[News]:
         pass

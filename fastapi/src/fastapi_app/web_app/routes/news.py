@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Set
 
 from fastapi_app.infrastructure.database import DatabaseRepositoryInMemory
@@ -20,7 +21,7 @@ def add_news(news_input: NewsSchemaInput):
     - **content**: News content
     - **creator**: Creator of content
     """
-    db_news = DATABASE_REPOSITORY.save(news_input=news_input)
+    db_news = DATABASE_REPOSITORY.save_news(news_input=news_input)
     return db_news.as_dict()
 
 
@@ -44,7 +45,7 @@ def get_news(news_id: int):
     Get the news with passed ID
     """
     try:
-        db_news = DATABASE_REPOSITORY.get(news_id=news_id)
+        db_news = DATABASE_REPOSITORY.get_news(news_id=news_id)
     except DatabaseRepositoryError as err:
         raise HTTPException(status_code=404, detail=str(err))
     return db_news.as_dict()
@@ -56,21 +57,16 @@ def get_news(news_id: int):
     summary="Get the news by filter",
 )
 def get_news_by_filter(
-    id: Set[int] = Query(set()),
-    created_at: Set[int] = Query(set()),
-    distinct: bool = True,
+    id: Set[int] = Query(set()), created_at: Set[datetime] = Query(set())
 ):
     """
     Get the news with passed filters.
 
     - **id**: List of id to search for
     - **created_at**: List of date of creation timestamps
-    - **distinct**: Get list with or without duplicates
     """
     try:
-        db_news = DATABASE_REPOSITORY.get_by_filter(
-            distinct=distinct, id=id, created_at=created_at
-        )
+        db_news = DATABASE_REPOSITORY.get_news_by_filter(id=id, created_at=created_at)
     except DatabaseRepositoryError as err:
         raise HTTPException(status_code=404, detail=str(err))
     return [news.as_dict() for news in db_news]
