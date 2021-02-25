@@ -13,7 +13,7 @@ DATABASE_REPOSITORY = DatabaseRepositoryInMemory()
 
 
 @router.post("/news", response_model=NewsSchemaOutput, summary="Create the news")
-def add_news(news_input: NewsSchemaInput):
+async def add_news(news_input: NewsSchemaInput):
     """
     Create the news with following information:
 
@@ -21,7 +21,7 @@ def add_news(news_input: NewsSchemaInput):
     - **content**: News content
     - **creator**: Creator of content
     """
-    db_news = DATABASE_REPOSITORY.save_news(news_input=news_input)
+    db_news = await DATABASE_REPOSITORY.save_news(news_input=news_input)
     return db_news.as_dict()
 
 
@@ -40,12 +40,12 @@ def add_news(news_input: NewsSchemaInput):
         }
     },
 )
-def get_news(news_id: int):
+async def get_news(news_id: int):
     """
     Get the news with passed ID
     """
     try:
-        db_news = DATABASE_REPOSITORY.get_news(news_id=news_id)
+        db_news = await DATABASE_REPOSITORY.get_news(news_id=news_id)
     except DatabaseRepositoryError as err:
         raise HTTPException(status_code=404, detail=str(err))
     return db_news.as_dict()
@@ -56,7 +56,7 @@ def get_news(news_id: int):
     response_model=List[NewsSchemaOutput],
     summary="Get the news by filter",
 )
-def get_news_by_filter(
+async def get_news_by_filter(
     id: Set[int] = Query(set()), created_at: Set[datetime] = Query(set())
 ):
     """
@@ -66,7 +66,7 @@ def get_news_by_filter(
     - **created_at**: List of date of creation timestamps
     """
     try:
-        db_news = DATABASE_REPOSITORY.get_news_by_filter(id=id, created_at=created_at)
+        db_news = await DATABASE_REPOSITORY.get_news_by_filter(id=id, created_at=created_at)
     except DatabaseRepositoryError as err:
         raise HTTPException(status_code=404, detail=str(err))
     return [news.as_dict() for news in db_news]
