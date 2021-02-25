@@ -8,11 +8,11 @@ from fastapi_app.web_app.schemas import NewsSchemaInput
 
 class DatabaseRepository(Abstract):
     @abstractmethod
-    async def save_news(self, news: NewsSchemaInput) -> News:
+    async def save_news(self, news_input: NewsSchemaInput) -> News:
         pass
 
     @abstractmethod
-    async def get_news(self, id: int) -> News:
+    async def get_news(self, news_id: int) -> News:
         pass
 
     @abstractmethod
