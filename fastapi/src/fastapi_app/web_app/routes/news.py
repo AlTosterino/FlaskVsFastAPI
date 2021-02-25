@@ -20,7 +20,8 @@ def add_news(news_input: NewsSchemaInput):
     - **content**: News content
     - **creator**: Creator of content
     """
-    return DATABASE_REPOSITORY.save(news_input=news_input)
+    db_news = DATABASE_REPOSITORY.save(news_input=news_input)
+    return db_news.as_dict()
 
 
 @router.get(
@@ -46,7 +47,7 @@ def get_news(news_id: int):
         db_news = DATABASE_REPOSITORY.get(news_id=news_id)
     except DatabaseRepositoryError as err:
         raise HTTPException(status_code=404, detail=str(err))
-    return db_news
+    return db_news.as_dict()
 
 
 @router.get(
@@ -72,4 +73,4 @@ def get_news_by_filter(
         )
     except DatabaseRepositoryError as err:
         raise HTTPException(status_code=404, detail=str(err))
-    return db_news
+    return [news.as_dict() for news in db_news]
