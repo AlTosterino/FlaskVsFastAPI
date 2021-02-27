@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from fastapi_app.domain.base import Domain
+from fastapi_app.domain.base import Entity
 
 from .creator import Creator
 
 
 @dataclass
-class News(Domain):
+class News(Entity):
     content: str
     created_at: datetime
     creator: Creator

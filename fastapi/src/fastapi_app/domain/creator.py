@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from fastapi_app.domain.base import Domain
+from fastapi_app.domain.base import Entity
 
 
 @dataclass
-class Creator(Domain):
+class Creator(Entity):
     first_name: str
     last_name: str
