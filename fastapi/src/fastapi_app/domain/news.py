@@ -13,3 +13,4 @@ class News(Domain):
     creator: Creator
     id: int
     title: str
+    updated_at: datetime

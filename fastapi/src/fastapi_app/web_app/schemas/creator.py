@@ -2,6 +2,11 @@ from pydantic import BaseModel, Field
 
 
 class CreatorSchema(BaseModel):
+    first_name: str = ""
+    last_name: str = ""
+
+
+class CreatorSchemaInput(CreatorSchema):
     first_name: str = Field(
         title="First name of the creator",
         min_length=2,
@@ -14,3 +19,8 @@ class CreatorSchema(BaseModel):
         max_length=100,
         example="Doe",
     )
+
+
+class CreatorSchemaUpdate(CreatorSchema):
+    first_name: str = ""
+    last_name: str = ""

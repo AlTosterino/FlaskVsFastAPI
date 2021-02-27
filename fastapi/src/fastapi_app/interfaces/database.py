@@ -12,6 +12,14 @@ class DatabaseRepository(Abstract):
         pass
 
     @abstractmethod
+    async def delete_news(self, news_id: int) -> None:
+        pass
+
+    @abstractmethod
+    async def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
+        pass
+
+    @abstractmethod
     async def get_news(self, news_id: int) -> News:
         pass
 
