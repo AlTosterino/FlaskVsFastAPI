@@ -1,12 +1,9 @@
-from flask import Flask, jsonify
+from flask_app.web_app.routes import news_router
+
+from flask import Flask
 
 app = Flask(__name__)
-
-
-@app.route("/")
-def hello_world():
-    return jsonify({"Hello": "World"})
-
+app.register_blueprint(news_router)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
