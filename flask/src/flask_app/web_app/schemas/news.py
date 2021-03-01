@@ -22,11 +22,15 @@ class NewsSchemaInput(NewsSchema):
 
     def _validate_title(self) -> None:
         if MIN_TITLE_LEN > len(self.title) < MAX_TITLE_LEN:
-            self._errors["title"] = "Title"
+            self._errors[
+                "title"
+            ] = f"Title should be {MIN_TITLE_LEN}-{MAX_TITLE_LEN} characters long"
 
     def _validate_content(self) -> None:
         if len(self.content) < MIN_CONTENT_LEN:
-            self._errors["content"] = "Content"
+            self._errors[
+                "content"
+            ] = f"Content should be minimum {MIN_CONTENT_LEN} characters long"
 
     def __post_init__(self) -> None:
         self._validate_content()
@@ -37,4 +41,6 @@ class NewsSchemaInput(NewsSchema):
         except ValidationError as err:
             self._errors["creator"] = err.errors
         if self._errors:
-            raise ValidationError(self._errors)
+            raise ValidationError(
+                f"Validation failed on {type(self).__name__}", self._errors
+            )

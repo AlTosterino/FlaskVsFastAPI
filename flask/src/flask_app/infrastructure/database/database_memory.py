@@ -1,4 +1,3 @@
-import asyncio
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Dict, List
@@ -14,7 +13,7 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
     _last_id: int = field(init=False, default=0)
     _database: Dict[int, News] = field(init=False, default_factory=dict)
 
-    async def save_news(self, news_input: NewsSchemaInput) -> News:
+    def save_news(self, news_input: NewsSchemaInput) -> News:
         self._last_id += 1
         now = datetime.now(tz=timezone.utc).replace(microsecond=0)
         news_to_save = News(
@@ -28,20 +27,18 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
             title=news_input.title,
             content=news_input.content,
         )
-        await asyncio.sleep(0.01)
         self._database[self._last_id] = news_to_save
         return news_to_save
 
-    async def delete_news(self, news_id: int) -> None:
-        await asyncio.sleep(0.01)
+    def delete_news(self, news_id: int) -> None:
         try:
             self._database.pop(news_id)
         except KeyError:
             raise DatabaseRepositoryError(f"News with id {news_id} don't exist")
         return
 
-    async def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
-        news = await self.get_news(news_id=news_id)
+    def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
+        news = self.get_news(news_id=news_id)
         now = datetime.now(tz=timezone.utc).replace(microsecond=0)
         news_to_update = News(
             id=news.id,
@@ -54,23 +51,20 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
             title=news_input.title,
             content=news_input.content,
         )
-        await asyncio.sleep(0.01)
         self._database[news_to_update.id] = news_to_update
         return news_to_update
 
-    async def get_news(self, news_id: int) -> News:
-        await asyncio.sleep(0.01)
+    def get_news(self, news_id: int) -> News:
         try:
             return self._database[news_id]
         except KeyError:
             raise DatabaseRepositoryError(f"News with id {news_id} don't exist")
 
-    async def get_news_by_filter(self, **kwargs: Any) -> List[News]:
+    def get_news_by_filter(self, **kwargs: Any) -> List[News]:
         news_result = list()
         for news in self._database.values():
             for attr_name, attr_value in kwargs.items():
                 if getattr(news, attr_name, None) in attr_value:
                     if news not in news_result:
                         news_result.append(news)
-        await asyncio.sleep(0.01)
         return news_result

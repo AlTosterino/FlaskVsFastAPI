@@ -8,21 +8,21 @@ from flask_app.web_app.schemas import NewsSchemaInput
 
 class DatabaseRepository(Abstract):
     @abstractmethod
-    async def save_news(self, news_input: NewsSchemaInput) -> News:
+    def save_news(self, news_input: NewsSchemaInput) -> News:
         pass
 
     @abstractmethod
-    async def delete_news(self, news_id: int) -> None:
+    def delete_news(self, news_id: int) -> None:
         pass
 
     @abstractmethod
-    async def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
+    def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
         pass
 
     @abstractmethod
-    async def get_news(self, news_id: int) -> News:
+    def get_news(self, news_id: int) -> News:
         pass
 
     @abstractmethod
-    async def get_news_by_filter(self, **kwargs: Any) -> List[News]:
+    def get_news_by_filter(self, **kwargs: Any) -> List[News]:
         pass
