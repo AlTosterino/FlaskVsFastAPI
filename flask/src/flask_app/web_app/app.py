@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from typing import Tuple
 
+from flask_app.shared.exceptions import DatabaseRepositoryError
 from flask_app.shared.exceptions.validation import ValidationError
 from flask_app.web_app.routes import news_router
 
@@ -14,6 +15,12 @@ app.register_blueprint(news_router)
 def handle_validation_error(exc: ValidationError) -> Tuple[dict, int]:
     status_code = HTTPStatus.UNPROCESSABLE_ENTITY
     return {"details": exc.errors}, status_code
+
+
+@app.errorhandler(DatabaseRepositoryError)
+def handle_database_error(exc: DatabaseRepositoryError) -> Tuple[dict, int]:
+    status_code = HTTPStatus.BAD_REQUEST
+    return {"details": str(exc)}, status_code
 
 
 if __name__ == "__main__":

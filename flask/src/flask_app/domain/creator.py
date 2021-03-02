@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from .base import Entity
 
@@ -7,3 +7,6 @@ from .base import Entity
 class Creator(Entity):
     first_name: str
     last_name: str
+
+    def as_dict(self) -> dict:
+        return asdict(self)

@@ -3,12 +3,12 @@ from abc import abstractmethod
 from typing import Any, List
 
 from flask_app.domain import News
-from flask_app.web_app.schemas import NewsSchemaInput
+from flask_app.shared.dto import NewsDTO
 
 
 class DatabaseRepository(Abstract):
     @abstractmethod
-    def save_news(self, news_input: NewsSchemaInput) -> News:
+    def save_news(self, news: NewsDTO) -> News:
         pass
 
     @abstractmethod
@@ -16,7 +16,7 @@ class DatabaseRepository(Abstract):
         pass
 
     @abstractmethod
-    def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
+    def update_news(self, news_id: int, news: NewsDTO) -> News:
         pass
 
     @abstractmethod

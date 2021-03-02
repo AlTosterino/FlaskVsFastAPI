@@ -1,7 +1,8 @@
 from abc import ABC as Abstract
-from dataclasses import asdict
+from abc import abstractmethod
 
 
 class Entity(Abstract):
+    @abstractmethod
     def as_dict(self) -> dict:
-        return asdict(self)
+        pass

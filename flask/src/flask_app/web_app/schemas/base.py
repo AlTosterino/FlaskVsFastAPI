@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 
 @dataclass
 class BaseSchema:
-    pass
+    def as_dict(self) -> dict:
+        schema_as_dict = asdict(self)
+        schema_as_dict.pop("_errors")
+        return schema_as_dict

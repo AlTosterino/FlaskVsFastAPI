@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
 from flask_app.shared.exceptions.validation import ValidationError
+from flask_app.web_app.schemas.base import BaseSchema
 
 from .creator import CreatorSchema, CreatorSchemaInput
 
@@ -10,7 +11,7 @@ MIN_CONTENT_LEN = 50
 
 
 @dataclass()
-class NewsSchema:
+class NewsSchema(BaseSchema):
     title: str = ""
     content: str = ""
     creator: CreatorSchema = CreatorSchema()

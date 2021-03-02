@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
 from flask_app.shared.exceptions.validation import ValidationError
+from flask_app.web_app.schemas.base import BaseSchema
 
 FIRST_NAME_MIN_LEN = 2
 FIRST_NAME_MAX_LEN = 60
@@ -9,7 +10,7 @@ LAST_NAME_MAX_LEN = 100
 
 
 @dataclass
-class CreatorSchema:
+class CreatorSchema(BaseSchema):
     first_name: str = ""
     last_name: str = ""
 
