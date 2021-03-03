@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 
+from flask_app.domain import Creator
 from flask_app.shared.exceptions.validation import ValidationError
 from flask_app.web_app.schemas.base import BaseSchema
 
@@ -13,6 +16,10 @@ LAST_NAME_MAX_LEN = 100
 class CreatorSchema(BaseSchema):
     first_name: str = ""
     last_name: str = ""
+
+    @classmethod
+    def from_entity(cls, creator: Creator) -> CreatorSchema:
+        return CreatorSchema(first_name=creator.first_name, last_name=creator.last_name)
 
 
 @dataclass

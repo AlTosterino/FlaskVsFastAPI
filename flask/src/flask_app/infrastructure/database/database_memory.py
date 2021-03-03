@@ -13,7 +13,7 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
     _last_id: int = field(init=False, default=0)
     _database: Dict[int, News] = field(init=False, default_factory=dict)
 
-    def save_news(self, news: NewsDTO) -> News:
+    def save_news(self, news_dto: NewsDTO) -> News:
         self._last_id += 1
         now = datetime.now(tz=timezone.utc).replace(microsecond=0)
         news_to_save = News(
@@ -21,11 +21,11 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
             created_at=now,
             updated_at=now,
             creator=Creator(
-                first_name=news.creator.first_name,
-                last_name=news.creator.last_name,
+                first_name=news_dto.creator.first_name,
+                last_name=news_dto.creator.last_name,
             ),
-            title=news.title,
-            content=news.content,
+            title=news_dto.title,
+            content=news_dto.content,
         )
         self._database[self._last_id] = news_to_save
         return news_to_save
@@ -37,19 +37,19 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
             raise DatabaseRepositoryError(f"News with id {news_id} don't exist")
         return
 
-    def update_news(self, news_id: int, news: NewsDTO) -> News:
-        news = self.get_news(news_id=news_id)
+    def update_news(self, news_id: int, news_dto: NewsDTO) -> News:
+        news_from_db = self.get_news(news_id=news_id)
         now = datetime.now(tz=timezone.utc).replace(microsecond=0)
         news_to_update = News(
-            id=news.id,
-            created_at=news.created_at,
+            id=news_from_db.id,
+            created_at=news_from_db.created_at,
             updated_at=now,
             creator=Creator(
-                first_name=news.creator.first_name,
-                last_name=news.creator.last_name,
+                first_name=news_dto.creator.first_name,
+                last_name=news_dto.creator.last_name,
             ),
-            title=news.title,
-            content=news.content,
+            title=news_dto.title,
+            content=news_dto.content,
         )
         self._database[news_to_update.id] = news_to_update
         return news_to_update

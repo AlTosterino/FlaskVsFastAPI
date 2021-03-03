@@ -16,5 +16,5 @@ class News(Entity):
     def as_dict(self) -> dict:
         news_as_dict = asdict(self)
         news_as_dict["created_at"] = int(self.created_at.timestamp())
-        news_as_dict["updated_at"] = int(self.created_at.timestamp())
+        news_as_dict["updated_at"] = int(self.updated_at.timestamp())
         return news_as_dict

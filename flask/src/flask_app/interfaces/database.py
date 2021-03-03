@@ -8,7 +8,7 @@ from flask_app.shared.dto import NewsDTO
 
 class DatabaseRepository(Abstract):
     @abstractmethod
-    def save_news(self, news: NewsDTO) -> News:
+    def save_news(self, news_dto: NewsDTO) -> News:
         pass
 
     @abstractmethod
@@ -16,7 +16,7 @@ class DatabaseRepository(Abstract):
         pass
 
     @abstractmethod
-    def update_news(self, news_id: int, news: NewsDTO) -> News:
+    def update_news(self, news_id: int, news_dto: NewsDTO) -> News:
         pass
 
     @abstractmethod

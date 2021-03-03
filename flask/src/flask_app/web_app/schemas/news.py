@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 
+from flask_app.domain import News
 from flask_app.shared.exceptions.validation import ValidationError
 from flask_app.web_app.schemas.base import BaseSchema
 
@@ -15,6 +18,14 @@ class NewsSchema(BaseSchema):
     title: str = ""
     content: str = ""
     creator: CreatorSchema = CreatorSchema()
+
+    @classmethod
+    def from_entity(cls, news: News) -> NewsSchema:
+        return cls(
+            title=news.title,
+            content=news.content,
+            creator=CreatorSchema.from_entity(creator=news.creator),
+        )
 
 
 @dataclass()
@@ -37,7 +48,7 @@ class NewsSchemaInput(NewsSchema):
         self._validate_content()
         self._validate_title()
         try:
-            if not isinstance(self.creator, CreatorSchemaInput):
+            if not isinstance(self.creator, CreatorSchemaInput):  # type: ignore
                 self.creator = CreatorSchemaInput(**self.creator)  # type: ignore
         except ValidationError as err:
             self._errors["creator"] = err.errors
