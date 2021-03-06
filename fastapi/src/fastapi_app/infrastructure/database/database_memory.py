@@ -5,8 +5,8 @@ from typing import Any, Dict, List
 
 from fastapi_app.domain import Creator, News
 from fastapi_app.interfaces import DatabaseRepository
-from fastapi_app.shared.exceptions import DatabaseRepositoryError
-from fastapi_app.web_app.schemas import NewsSchemaInput
+from fastapi_app.shared.dto import NewsDTO
+from fastapi_app.shared.exceptions import NewsNotFoundError
 
 
 @dataclass
@@ -14,7 +14,7 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
     _last_id: int = field(init=False, default=0)
     _database: Dict[int, News] = field(init=False, default_factory=dict)
 
-    async def save_news(self, news_input: NewsSchemaInput) -> News:
+    async def save_news(self, news_dto: NewsDTO) -> News:
         self._last_id += 1
         now = datetime.now(tz=timezone.utc).replace(microsecond=0)
         news_to_save = News(
@@ -22,11 +22,11 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
             created_at=now,
             updated_at=now,
             creator=Creator(
-                first_name=news_input.creator.first_name,
-                last_name=news_input.creator.last_name,
+                first_name=news_dto.creator.first_name,
+                last_name=news_dto.creator.last_name,
             ),
-            title=news_input.title,
-            content=news_input.content,
+            title=news_dto.title,
+            content=news_dto.content,
         )
         await asyncio.sleep(0.01)
         self._database[self._last_id] = news_to_save
@@ -37,10 +37,10 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
         try:
             self._database.pop(news_id)
         except KeyError:
-            raise DatabaseRepositoryError(f"News with id {news_id} don't exist")
+            raise NewsNotFoundError(f"News with id {news_id} don't exist")
         return
 
-    async def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
+    async def update_news(self, news_id: int, news_dto: NewsDTO) -> News:
         news = await self.get_news(news_id=news_id)
         now = datetime.now(tz=timezone.utc).replace(microsecond=0)
         news_to_update = News(
@@ -48,11 +48,11 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
             created_at=news.created_at,
             updated_at=now,
             creator=Creator(
-                first_name=news_input.creator.first_name,
-                last_name=news_input.creator.last_name,
+                first_name=news_dto.creator.first_name,
+                last_name=news_dto.creator.last_name,
             ),
-            title=news_input.title,
-            content=news_input.content,
+            title=news_dto.title,
+            content=news_dto.content,
         )
         await asyncio.sleep(0.01)
         self._database[news_to_update.id] = news_to_update
@@ -63,7 +63,7 @@ class DatabaseRepositoryInMemory(DatabaseRepository):
         try:
             return self._database[news_id]
         except KeyError:
-            raise DatabaseRepositoryError(f"News with id {news_id} don't exist")
+            raise NewsNotFoundError(f"News with id {news_id} don't exist")
 
     async def get_news_by_filter(self, **kwargs: Any) -> List[News]:
         news_result = list()

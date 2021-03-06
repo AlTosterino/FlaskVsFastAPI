@@ -1,1 +1,1 @@
-from .database import DatabaseRepositoryError
+from .database import NewsNotFoundError

@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask_app.shared.dto import NewsDTO
 from flask_app.web_app.dependencies.database import get_database_repo
 from flask_app.web_app.schemas import NewsSchemaInput
@@ -15,7 +17,7 @@ def add_news():
     news_dto = NewsDTO.from_news_schema(news_schema=news_schema)
     saved_news = db_repo.save_news(news_dto=news_dto)
     output_schema = NewsSchemaOutput.from_entity(news=saved_news).as_dict()
-    return output_schema
+    return output_schema, HTTPStatus.CREATED
 
 
 @news_router.route("/news/<int:news_id>", methods=["GET"])
@@ -35,7 +37,16 @@ def update_news(news_id: int):
     input_schema = NewsSchemaInput(**updated_schema)
     dto = NewsDTO.from_news_schema(news_schema=input_schema)
     db_repo.update_news(news_id=news_id, news_dto=dto)
-    return b""
+    return b"", HTTPStatus.NO_CONTENT
+
+
+@news_router.route("/news/<int:news_id>", methods=["PATCH"])
+def overwrite_news(news_id: int):
+    db_repo = get_database_repo()
+    news_schema = NewsSchemaInput(**request.get_json())
+    news_dto = NewsDTO.from_news_schema(news_schema=news_schema)
+    db_repo.update_news(news_id=news_id, news_dto=news_dto)
+    return b"", HTTPStatus.NO_CONTENT
 
 
 @news_router.route("/news", methods=["GET"])

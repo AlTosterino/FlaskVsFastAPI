@@ -3,12 +3,12 @@ from abc import abstractmethod
 from typing import Any, List
 
 from fastapi_app.domain import News
-from fastapi_app.web_app.schemas import NewsSchemaInput
+from fastapi_app.shared.dto import NewsDTO
 
 
 class DatabaseRepository(Abstract):
     @abstractmethod
-    async def save_news(self, news_input: NewsSchemaInput) -> News:
+    async def save_news(self, news_dto: NewsDTO) -> News:
         pass
 
     @abstractmethod
@@ -16,7 +16,7 @@ class DatabaseRepository(Abstract):
         pass
 
     @abstractmethod
-    async def update_news(self, news_id: int, news_input: NewsSchemaInput) -> News:
+    async def update_news(self, news_id: int, news_dto: NewsDTO) -> News:
         pass
 
     @abstractmethod

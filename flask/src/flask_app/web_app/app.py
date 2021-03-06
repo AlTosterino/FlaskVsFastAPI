@@ -14,13 +14,13 @@ app.register_blueprint(news_router)
 @app.errorhandler(ValidationError)
 def handle_validation_error(exc: ValidationError) -> Tuple[dict, int]:
     status_code = HTTPStatus.UNPROCESSABLE_ENTITY
-    return {"details": exc.errors}, status_code
+    return {"detail": exc.errors}, status_code
 
 
 @app.errorhandler(DatabaseRepositoryError)
 def handle_database_error(exc: DatabaseRepositoryError) -> Tuple[dict, int]:
     status_code = HTTPStatus.BAD_REQUEST
-    return {"details": str(exc)}, status_code
+    return {"detail": str(exc)}, status_code
 
 
 if __name__ == "__main__":
