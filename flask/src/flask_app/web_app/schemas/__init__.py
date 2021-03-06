@@ -1,2 +1,2 @@
-from .creator import CreatorSchemaInput
-from .news import NewsSchemaInput
+from .creator import CreatorSchemaInput, CreatorSchemaOutput
+from .news import NewsSchemaInput, NewsSchemaOutput

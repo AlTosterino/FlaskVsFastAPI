@@ -45,3 +45,7 @@ class CreatorSchemaInput(CreatorSchema):
             raise ValidationError(
                 f"Validation failed on {type(self).__name__}", self._errors
             )
+
+
+class CreatorSchemaOutput(CreatorSchema):
+    pass

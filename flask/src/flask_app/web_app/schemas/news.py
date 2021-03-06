@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 
 from flask_app.domain import News
 from flask_app.shared.exceptions.validation import ValidationError
@@ -56,3 +57,27 @@ class NewsSchemaInput(NewsSchema):
             raise ValidationError(
                 f"Validation failed on {type(self).__name__}", self._errors
             )
+
+
+@dataclass
+class NewsSchemaOutput(NewsSchema):
+    id: int = 0
+    created_at: datetime = datetime.now()
+    updated_at: datetime = datetime.now()
+
+    @classmethod
+    def from_entity(cls, news: News) -> NewsSchemaOutput:
+        return cls(
+            id=news.id,
+            created_at=news.created_at,
+            updated_at=news.updated_at,
+            title=news.title,
+            content=news.content,
+            creator=CreatorSchema.from_entity(creator=news.creator),
+        )
+
+    def as_dict(self) -> dict:
+        schema_as_dict = super().as_dict()
+        schema_as_dict["created_at"] = int(self.created_at.timestamp())
+        schema_as_dict["updated_at"] = int(self.updated_at.timestamp())
+        return schema_as_dict
