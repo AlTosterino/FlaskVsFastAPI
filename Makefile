@@ -6,9 +6,7 @@ COMPOSE_EXEC?=docker-compose
 
 LINT_PATHS = \
 $(FLAKE_APP_PATH) \
-$(FASTAPI_APP_PATH) \
-fastapi/tests \
-flask/tests
+$(FASTAPI_APP_PATH)
 
 compile-deps:
 	$(PYTHON_EXEC) -m piptools compile --no-header  "${PROJ_PTH}fastapi/deployment/requirements/dev.in"

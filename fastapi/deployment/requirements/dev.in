@@ -1,6 +1,7 @@
 -c prod.txt
-pytest
-black
 autoflake
-mypy
+black
 isort
+locust
+mypy
+pytest

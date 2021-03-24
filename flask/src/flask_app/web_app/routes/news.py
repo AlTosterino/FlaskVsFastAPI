@@ -20,6 +20,13 @@ def add_news():
     return output_schema, HTTPStatus.CREATED
 
 
+@news_router.route("/news/<int:news_id>", methods=["DELETE"])
+def delete_news(news_id: int):
+    db_repo = get_database_repo()
+    db_repo.delete_news(news_id=news_id)
+    return b"", HTTPStatus.NO_CONTENT
+
+
 @news_router.route("/news/<int:news_id>", methods=["GET"])
 def get_news(news_id: int):
     db_repo = get_database_repo()

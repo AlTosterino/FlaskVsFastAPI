@@ -2,10 +2,10 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
-from fastapi_app.shared.exceptions import DatabaseRepositoryError
 from flask_app.domain import Creator, News
 from flask_app.interfaces import DatabaseRepository
 from flask_app.shared.dto import NewsDTO
+from flask_app.shared.exceptions import DatabaseRepositoryError
 
 
 @dataclass
