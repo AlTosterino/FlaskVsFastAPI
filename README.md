@@ -29,6 +29,8 @@ Aby uruchomić `FastAPI`:
 
 Aby uruchomić `Flask`:
 - `make run-flask`
+- Aplikacja będzie dostępna pod adresem: `localhost:5000`
 
 Aby uruchomić `FastAPI`:
 - `make run-fastapi`
+- Aplikacja będzie dostępna pod adresem: `localhost:8000`
