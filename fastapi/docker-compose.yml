@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  fastapi:
+    build:
+      dockerfile: ./deployment/Dockerfile
+      context: .
+    restart: on-failure
+    ports:
+      - 8000:8000
+    command: bash -c "pip install -e . && uvicorn fastapi_app.web_app.app:app --host 0.0.0.0"
+    volumes:
+      - .:/app

@@ -1,3 +1,4 @@
+import os
 from http import HTTPStatus
 from typing import Tuple
 
@@ -24,4 +25,4 @@ def handle_database_error(exc: DatabaseRepositoryError) -> Tuple[dict, int]:
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host=os.environ.get("APP_HOST", "127.0.0.1"))

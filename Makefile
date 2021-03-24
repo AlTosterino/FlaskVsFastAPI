@@ -44,3 +44,9 @@ run-fastapi:
 
 run-flask:
 	$(PYTHON_EXEC) $(FLAKE_APP_PATH)flask_app/web_app/app.py
+
+docker-fastapi:
+	$(COMPOSE_EXEC) -f fastapi/docker-compose.yml up --force-recreate
+
+docker-flask:
+	$(COMPOSE_EXEC) -f flask/docker-compose.yml up --force-recreate

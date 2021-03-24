@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  fastapi:
+    build:
+      dockerfile: ./deployment/Dockerfile
+      context: .
+    environment:
+      - APP_HOST=0.0.0.0
+    restart: on-failure
+    ports:
+      - 5000:5000
+    command: bash -c "pip install -e . && python src/flask_app/web_app/app.py"
+    volumes:
+      - .:/app
